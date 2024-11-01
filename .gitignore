@@ -5,3 +5,4 @@
 **/Test1/Code/logs
 **/Test1/Code/__pycache__
 **.DS_Store
+**/Test1/Code/results.csv
