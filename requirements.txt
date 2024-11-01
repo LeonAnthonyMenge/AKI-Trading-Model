@@ -1,0 +1,12 @@
+lumibot==3.0.6
+yfinance==0.2.36
+alpaca-py
+alpaca-trade-api
+alpha-vantage
+pandas
+numpy
+timedelta
+torch
+transformers
+python-dotenv
+scikit-learn
