@@ -7,7 +7,7 @@ from timedelta import Timedelta
 
 class Backtest(Strategy): 
     
-    def initialize(self, model, symbol:str="DAX", cash_at_risk:float=.5, num_prior_days:int=5): 
+    def initialize(self, model, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
         self.symbol = symbol
         self.sleeptime = "24H" 
         self.last_trade = None 
@@ -39,11 +39,9 @@ class Backtest(Strategy):
         
         # Reshape with necessary adjustments
         x = data.to_numpy().reshape(1, self.num_prior_days, len(data.columns))
-        print(f"X-Shape: {x.shape}")
 
         # Make prediction
         prediction = int(self.model(torch.tensor(x, dtype=torch.float32)).round().item())
-        print(f"Prediction: {prediction}")
                 
         return prediction
 
@@ -56,8 +54,6 @@ class Backtest(Strategy):
                         quantity, 
                         "buy", 
                         type="bracket", 
-                        take_profit_price=last_price*1.20, 
-                        stop_loss_price=last_price*.95
                     )
                 self.submit_order(order) 
                 self.last_trade = "buy"
@@ -70,8 +66,6 @@ class Backtest(Strategy):
                         quantity, 
                         "sell", 
                         type="bracket", 
-                        take_profit_price=last_price*.8, 
-                        stop_loss_price=last_price*1.05
                     )
                 self.submit_order(order) 
                 self.last_trade = "sell"
