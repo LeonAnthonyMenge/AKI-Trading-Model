@@ -1,5 +1,6 @@
 # Short description: ​
 Using a LSTM for predicting the DAX Index wether it is profitable to buy on a given day or not.
+It uses Gold & Brent Crude Oil to look for possible correlations in order to improve the prediction.
 
 ##  Modeling architecture
 - LSTM
@@ -18,7 +19,7 @@ Using a LSTM for predicting the DAX Index wether it is profitable to buy on a gi
 - seq_size = 30
 
 ## Data acquisition
-- DAX
+- DAX, Gold, Brent Crude Oil 
 - YFinance API
 ### Features
 - X
