@@ -1,5 +1,5 @@
 # Short description: ​
-Using a LSTM for predicting the DAX Index wether it is profitable to buy on a given day or not.
+Using a LSTM for predicting the DAX Index whether it is profitable to buy on a given day or not. To improve accuracy the current ecb interest rate was added as data.
 
 ##  Modeling architecture
 - LSTM
@@ -40,26 +40,16 @@ Using a LSTM for predicting the DAX Index wether it is profitable to buy on a gi
 Higher cumulative return by our Strategy than the DAX itself.
 
 ## Performance criteria
-For our Tests we use the Model from Epoch: 18 as it was the first one with the best performance. Keep in mind there are only two performance types of our Model: always invest and always sell.
+For our Tests we use the Model from Epoch: XXXX as it was the first one with the best performance. Keep in mind there are only two performance types of our Model: always invest and always sell.
 
 ### Backtesting
 - Using Library: lumibot.strategies.strategy and YFinance API
 - Data from 2022 to 2023
 - Interval: daily
 - DAX cumulative return over time: 15.6%
-- Steategy cumulative return over time: 4.42%
+- Steategy cumulative return over time: 
 
-![alt backtesting_results](results/backtesting_results.png)
 
 ### General Results
-- Accuracy: 0.55
-- Precision: 0.55
-- Recall: 1.00
-- F1 Score: 0.71
-
-![alt text](results/confusion_matrix.png)
-
-![alt text](results/corr_matrix.png)
 
 ## Conclusion
-The model is not very accurate, every prediction of the model is to invest. Therefore it will underperform or overperform the DAX depending on its changes in trend over time.

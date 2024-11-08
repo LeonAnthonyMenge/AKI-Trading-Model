@@ -1,5 +1,3 @@
-from datetime import time
-
 import torch
 from lumibot.strategies.strategy import Strategy
 from data_collector import get_finance_data, determine_trend
