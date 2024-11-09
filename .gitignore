@@ -7,3 +7,8 @@
 **.DS_Store
 **/Test1/Code/results.csv
 **/Test4-Raw Material/Data
+**/Test2 - News/Data
+**/Test2 - News/Models
+**/Test2 - News/Code/logs
+**/Test2 - News/Code/__pycache__
+**/Test2 - News/Code/results
