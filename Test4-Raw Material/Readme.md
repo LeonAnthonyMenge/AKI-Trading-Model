@@ -19,8 +19,10 @@ It uses Gold & Brent Crude Oil to look for possible correlations in order to imp
 - seq_size = 30
 
 ## Data acquisition
+
 - DAX, Gold, Brent Crude Oil 
 - YFinance API
+
 ### Features
 - X
     - From 2015 to 2022
