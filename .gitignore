@@ -1,14 +1,22 @@
+# Environment files
 *.env
-**/Test1/Data
-**/Test1/Models
-**/venv
-**/Test1/Code/logs
-**/Test1/Code/__pycache__
-**.DS_Store
-**/Test1/Code/results.csv
-**/Test4-Raw Material/Data
-**/Test2 - News/Data
-**/Test2 - News/Models
-**/Test2 - News/Code/logs
-**/Test2 - News/Code/__pycache__
-**/Test2 - News/Code/results
+
+# Ignore Data directories in all Test folders
+**/Test*/Data/
+
+# Additional specific files or directories in Test folders
+**/Test*/Models/
+**/Test*/Code/logs/
+**/Test*/Code/results.csv
+
+**/Test*/Test*/Code/Models/
+**/Test*/Test*/Code/logs/
+**/Test*/Test*/Code/results/
+
+# Python virtual environment and cache files
+**/venv/
+**/__pycache__/
+
+# IDE and system files
+**/.idea/
+**/.DS_Store

@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import datetime, time, timedelta
 
 import torch
 from lumibot.strategies.strategy import Strategy
@@ -8,13 +8,14 @@ import pandas as pd
 
 class Backtest(Strategy): 
     
-    def initialize(self, model, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
+    def initialize(self, dataset: pd.DataFrame, model, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
         self.symbol = symbol
         self.sleeptime = "24H" 
         self.last_trade = None 
         self.cash_at_risk = cash_at_risk
         self.model = model
         self.num_prior_days = num_prior_days
+        self.dataset = dataset
 
     def position_sizing(self): 
         cash = self.get_cash() 
@@ -30,51 +31,24 @@ class Backtest(Strategy):
     def get_data(self) -> pd.DataFrame:
         today, prior_date = self.get_dates()
         
-        finance_data = collect_data_inkl_news(self.symbol, start=prior_date, end=today, alpaca_symbol="SPY")
-        # finance_data.drop(columns=["Unnamed: 0"], inplace=True)
-        
-        finance_data = finance_data[["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume", "month", "weekday", "news_probability", "news_sentiment"]]
-        # finance_data["news_probability"] = finance_data["news_probability"].apply(lambda x: float(x.removeprefix("tensor(").split(",")[0]))
-        finance_data["trend"] = finance_data.apply(determine_trend, axis=1)
-        finance_data["sentiment_int"] = finance_data.apply(sentiment_int, axis=1)
-        finance_data.set_index("Date", inplace=True)
-        finance_data.sort_index(inplace=True)
-        finance_data.reset_index(inplace=True)
-        finance_data = finance_data.drop(columns=["Date", "High", "Low", "Adj Close", "Volume", "news_sentiment"])
-
-        finance_data['Invest'] = 0
-        
-        for index, row in finance_data.iterrows():
-            if index > 0: 
-                if finance_data.at[index, "trend"] == 1:
-                    finance_data.at[index-1, "Invest"] = True
-                else:
-                    finance_data.at[index-1, "Invest"] = False
-
-        finance_data["month"] = finance_data["month"].astype(int)
-        finance_data["weekday"] = finance_data["weekday"].astype(int)
-        finance_data["Invest"] = finance_data["Invest"].astype(bool)
+        finance_data = self.dataset[self.dataset["Date"] == today]
+        finance_data = finance_data.iloc[:, 1:-1]
+        finance_data["news_probability"] = finance_data["news_probability"].apply(lambda x: x.removeprefix("tensor(").removesuffix(", grad_fn=<SelectBackward0>)"))
         
         return finance_data
     
     def get_model_prediction(self): 
-        finance_data = self.get_data()
+        data = self.get_data()
         
-        if finance_data.empty:
+        if data.empty:
             raise ValueError("Finance data is empty. Check data source or date range.")
-        
-
-        data = finance_data.iloc[:, :-1][:self.num_prior_days]
-        
+                
 
         data["month"] = data["month"].astype(int)
-        data["news_probability"] = data["news_probability"].astype(float)
-        
-        # Reshape with necessary adjustments
-        x = data.to_numpy().reshape(1, self.num_prior_days, len(data.columns))
+        data["news_probability"] = data["news_probability"].astype(float)        
 
         # Make prediction
-        prediction = int(self.model(torch.tensor(x, dtype=torch.float32)).round().item())
+        prediction = int(self.model(torch.tensor(data.values, dtype=torch.float32)).round().item())
                 
         return prediction
 
