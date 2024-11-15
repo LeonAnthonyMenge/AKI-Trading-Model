@@ -26,14 +26,14 @@ class Backtest(Strategy):
 
     def get_dates(self): 
         today = self.get_datetime()
-        prior_date = today - Timedelta(days=(self.num_prior_days+10))
+        prior_date = today - Timedelta(days=(self.num_prior_days+20))
         return today.strftime('%Y-%m-%d'), prior_date.strftime('%Y-%m-%d')
     
     def get_data(self) -> pd.DataFrame:
         today, prior_date = self.get_dates()
         
         self.dataset["Date"] = pd.to_datetime(self.dataset["Date"])
-        self.data = self.data[['Date','^GDAXI_Open', '^GDAXI_High', '^GDAXI_Low', '^GDAXI_Close',
+        self.dataset = self.dataset[['Date','^GDAXI_Open', '^GDAXI_High', '^GDAXI_Low', '^GDAXI_Close',
                                 '^GDAXI_Adj Close', '^GDAXI_Volume', '^GDAXI_month', '^GDAXI_weekday',
                                 'GC=F_Open', 'GC=F_High', 'GC=F_Low', 'GC=F_Close',
                                 'GC=F_Adj Close', 'GC=F_Volume', 'GC=F_month', 'GC=F_weekday',
