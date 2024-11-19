@@ -65,7 +65,7 @@ def determine_trend(row) -> int:
     return -1 if row['Open'] > row['Close'] else 1
 
 
-def get_ecb_interest_rates(start_date: str, end_date: str) -> pd.DataFrame:
+def get_ecb_interest_rates(start_date, end_date) -> pd.DataFrame:
     data_path = "../Data/ECB_Data_Raw.csv"
 
     df = pd.read_csv(data_path, parse_dates=["DATE"], usecols=["DATE",

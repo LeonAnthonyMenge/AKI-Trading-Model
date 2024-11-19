@@ -1,17 +1,20 @@
 import torch
+import pandas as pd
 from lumibot.strategies.strategy import Strategy
 from data_collector import get_finance_data, determine_trend
 from timedelta import Timedelta
 
 class Backtest(Strategy): 
     
-    def initialize(self, model, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
+    def initialize(self, model, scaler, dataset: pd.DataFrame, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
         self.symbol = symbol
         self.sleeptime = "24H" 
         self.last_trade = None 
         self.cash_at_risk = cash_at_risk
         self.model = model
         self.num_prior_days = num_prior_days
+        self.dataset = dataset
+        self.scaler = scaler
 
     def position_sizing(self): 
         cash = self.get_cash() 
@@ -21,25 +24,27 @@ class Backtest(Strategy):
 
     def get_dates(self): 
         today = self.get_datetime()
-        prior_date = today - Timedelta(days=(self.num_prior_days+10))
+        prior_date = today - Timedelta(days=(self.num_prior_days+20))
         return today.strftime('%Y-%m-%d'), prior_date.strftime('%Y-%m-%d')
     
-    def get_model_prediction(self): 
+    def get_data(self) -> pd.DataFrame:
         today, prior_date = self.get_dates()
-        finance_data = get_finance_data(self.symbol, start=prior_date, end=today, interval="1d")
         
-        if finance_data.empty:
-            raise ValueError("Finance data is empty. Check data source or date range.")
-        
-        finance_data['trend'] = finance_data.apply(determine_trend, axis=1)
-        data = finance_data.iloc[:, 1:].sort_index(ascending=False)[:self.num_prior_days]
-        data["month"] = data["month"].astype(int)
-        
-        # Reshape with necessary adjustments
-        x = data.to_numpy().reshape(1, self.num_prior_days, len(data.columns))
+        self.dataset["Date"] = pd.to_datetime(self.dataset["Date"])
+        finance_data = self.dataset[(self.dataset["Date"] <= today) & (self.dataset["Date"] >= prior_date)]
+        finance_data.set_index("Date", inplace=True)
+        finance_data = finance_data.sort_index(ascending=False)
+        finance_data.reset_index(inplace=True)
+        finance_data = finance_data.iloc[:self.num_prior_days, 1:-1]
+        finance_data.drop('DATE', inplace=True, axis=1)
+        finance_data = self.scaler.transform(finance_data.iloc[:self.num_prior_days, :].values).reshape(1, self.num_prior_days, len(finance_data.columns))
+        return finance_data
+    
+    def get_model_prediction(self): 
+        finance_data = self.get_data()
 
         # Make prediction
-        prediction = int(self.model(torch.tensor(x, dtype=torch.float32)).round().item())
+        prediction = int(self.model(torch.tensor(finance_data, dtype=torch.float32)).round().item())
                 
         return prediction
 
