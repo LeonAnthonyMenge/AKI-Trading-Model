@@ -56,10 +56,8 @@ class Backtest(Strategy):
         pred = self.get_model_prediction()
 
         # Entscheiden basierend auf der Vorhersage
-        print(f"Prediction: {pred}, Last Price: {last_price}")
         if pred > last_price:
             if cash > last_price:
-                print("Buying...")
                 order = self.create_order(
                     self.symbol,
                     quantity,
@@ -71,6 +69,5 @@ class Backtest(Strategy):
                 self.last_trade = "buy"
         else:
             if self.last_trade == "buy":
-                print("Selling...")
                 self.sell_all()
                 self.last_trade = "sell"
