@@ -50,7 +50,7 @@ Higher cumulative return by our Strategy than the DAX itself.
 
 ## Performance criteria
 
-For our Tests we use the Model from Epoch: XXXX as it was the first one with the best performance. Keep in mind there are only two performance types of our Model: always invest and always sell.
+Model with the lowest test-loss.
 
 ### Backtesting
 
