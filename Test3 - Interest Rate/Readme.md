@@ -1,4 +1,4 @@
-# Short description: ​
+# Short description: 
 
 Using a LSTM for predicting the DAX Index whether it is profitable to buy on a given day or not. To improve accuracy the current ecb interest rate was added as data.
 
@@ -8,11 +8,12 @@ Using a LSTM for predicting the DAX Index whether it is profitable to buy on a g
 
 ### Model parameter
 
-- input_size = 9
+- input_size = 7
 - output_size = 1
 - hidden_size = 1000
-- num_layers = 6
+- num_layers = 1
 - dropout = 0.2
+- batch_size = 1
 
 ### Training parameter
 
@@ -38,11 +39,8 @@ Using a LSTM for predicting the DAX Index whether it is profitable to buy on a g
   - Close
   - Adj Close
   - Volume
-  - Month
-  - Weekday
-  - Trend (trend is positive if open < close)
 - Y
-  - Buy or Sell
+  - Predicted closing price
 
 ## Target
 
