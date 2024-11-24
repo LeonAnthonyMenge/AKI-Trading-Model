@@ -59,19 +59,19 @@ The model aims to achieve higher cumulative returns using the strategy than the 
 
 ## Experimental Results
 
-| Run  | Hidden Size | Layers | Dropout | Seq Size | Min Test Loss      | Return (%) | Trades                                      | Perfomance                                    |
-|------|-------------|--------|---------|----------|--------------------|------------|---------------------------------------------|-----------------------------------------------|
-| 1    | 100         | 1      | 0.2     | 30       | 0.000620222606367  | 10.76      | [Trades1.html](results%2FRun1_trades.html)  | [Perfomance1.html](results%2FRun1_tearsheet.html)   |
-| 2    | 100         | 2      | 0.2     | 30       | 0.000788078277647  | 7.88       | [Trades2.html](results%2FRun1_trades.html)  | [Perfomance2.html](results%2FRun2_tearsheet.html)   |
-| 3    | 100         | 3      | 0.2     | 30       | 0.000974616196069  | 7.51       | [Trades3.html](results%2FRun1_trades.html)  | [Perfomance3.html](results%2FRun3_tearsheet.html)   |
-| 4    | 40          | 1      | 0.2     | 30       | 0.000641744519575  | 10.27      | [Trades4.html](results%2FRun1_trades.html)  | [Perfomance4.html](results%2FRun4_tearsheet.html)   |
-| 5    | 40          | 2      | 0.2     | 30       | 0.001898406070079  | 9.56       | [Trades5.html](results%2FRun1_trades.html)  | [Perfomance5.html](results%2FRun5_tearsheet.html)   |
-| 6    | 60          | 1      | 0.1     | 30       | 0.000641350149001  | 9.80       | [Trades6.html](results%2FRun1_trades.html)  | [Perfomance6.html](results%2FRun6_tearsheet.html)   |
-| 7    | 40          | 1      | 0.4     | 30       | 0.000680008666106  | 10.95      | [Trades7.html](results%2FRun1_trades.html)  | [Perfomance7.html](results%2FRun7_tearsheet.html)   |
-| 8    | 100         | 1      | 0.2     | 3        | 0.000810342993011  | 14.59      | [Trades8.html](results%2FRun1_trades.html)  | [Perfomance8.html](results%2FRun8_tearsheet.html)   |
-| 9    | 200         | 1      | 0.2     | 10       | 0.000646841717763  | 7.52       | [Trades9.html](results%2FRun1_trades.html)  | [Perfomance9.html](results%2FRun9_tearsheet.html)   |
-| 10   | 100         | 1      | 0.2     | 1        | 0.000643273457123  | 14.38      | [Trades10.html](results%2FRun1_trades.html) | [Perfomance10.html](results%2FRun10_tearsheet.html) |
-| 11   | 1           | 1      | 0       | 1        | 0.005727933009098  | 14.38      | [Trades11.html](results%2FRun1_trades.html) | [Perfomance11.html](results%2FRun11_tearsheet.html) |
+| Run  | Hidden Size | Layers | Dropout | Seq Size | Min Test Loss      | Return (%) | Trades                                      | Performance                                          |
+|------|-------------|--------|---------|----------|--------------------|------------|---------------------------------------------|------------------------------------------------------|
+| 1    | 100         | 1      | 0.2     | 30       | 0.000620222606367  | 10.76      | [Trades1.html](results%2FRun1_trades.html)  | [Performance1.html](results%2FRun1_tearsheet.html)   |
+| 2    | 100         | 2      | 0.2     | 30       | 0.000788078277647  | 7.88       | [Trades2.html](results%2FRun1_trades.html)  | [Performance2.html](results%2FRun2_tearsheet.html)   |
+| 3    | 100         | 3      | 0.2     | 30       | 0.000974616196069  | 7.51       | [Trades3.html](results%2FRun1_trades.html)  | [Performance3.html](results%2FRun3_tearsheet.html)   |
+| 4    | 40          | 1      | 0.2     | 30       | 0.000641744519575  | 10.27      | [Trades4.html](results%2FRun1_trades.html)  | [Performance4.html](results%2FRun4_tearsheet.html)   |
+| 5    | 40          | 2      | 0.2     | 30       | 0.001898406070079  | 9.56       | [Trades5.html](results%2FRun1_trades.html)  | [Performance5.html](results%2FRun5_tearsheet.html)   |
+| 6    | 60          | 1      | 0.1     | 30       | 0.000641350149001  | 9.80       | [Trades6.html](results%2FRun1_trades.html)  | [Performance6.html](results%2FRun6_tearsheet.html)   |
+| 7    | 40          | 1      | 0.4     | 30       | 0.000680008666106  | 10.95      | [Trades7.html](results%2FRun1_trades.html)  | [Performance7.html](results%2FRun7_tearsheet.html)   |
+| 8    | 100         | 1      | 0.2     | 3        | 0.000810342993011  | 14.59      | [Trades8.html](results%2FRun1_trades.html)  | [Performance8.html](results%2FRun8_tearsheet.html)   |
+| 9    | 200         | 1      | 0.2     | 10       | 0.000646841717763  | 7.52       | [Trades9.html](results%2FRun1_trades.html)  | [Performance9.html](results%2FRun9_tearsheet.html)   |
+| 10   | 100         | 1      | 0.2     | 1        | 0.000643273457123  | 14.38      | [Trades10.html](results%2FRun1_trades.html) | [Performance10.html](results%2FRun10_tearsheet.html) |
+| 11   | 1           | 1      | 0       | 1        | 0.005727933009098  | 14.38      | [Trades11.html](results%2FRun1_trades.html) | [Performance11.html](results%2FRun11_tearsheet.html) |
 
 ## Conclusion
 
