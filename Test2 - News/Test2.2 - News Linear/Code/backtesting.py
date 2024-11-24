@@ -1,21 +1,23 @@
 from datetime import datetime, time, timedelta
 
+import numpy as np
 import torch
 from lumibot.strategies.strategy import Strategy
-from data_collector import collect_data_inkl_news, determine_trend, sentiment_int
 from timedelta import Timedelta
 import pandas as pd
 
 class Backtest(Strategy): 
     
-    def initialize(self, dataset: pd.DataFrame, model, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
+    def initialize(self, model, scaler, scaler_y, dataset: pd.DataFrame, symbol: str = "^GDAXI", cash_at_risk: float = 0.5, num_prior_days: int = 5):
         self.symbol = symbol
-        self.sleeptime = "24H" 
-        self.last_trade = None 
+        self.sleeptime = "24H"
+        self.last_trade = None
         self.cash_at_risk = cash_at_risk
         self.model = model
         self.num_prior_days = num_prior_days
         self.dataset = dataset
+        self.scaler = scaler
+        self.scaler_y = scaler_y
 
     def position_sizing(self): 
         cash = self.get_cash() 
@@ -33,48 +35,33 @@ class Backtest(Strategy):
         
         finance_data = self.dataset[self.dataset["Date"] == today]
         finance_data = finance_data.iloc[:, 1:-1]
-        finance_data["news_probability"] = finance_data["news_probability"].apply(lambda x: x.removeprefix("tensor(").removesuffix(", grad_fn=<SelectBackward0>)"))
-        
+        finance_data = self.scaler.transform(finance_data.values)      
         return finance_data
     
     def get_model_prediction(self): 
-        data = self.get_data()
-        
-        if data.empty:
-            raise ValueError("Finance data is empty. Check data source or date range.")
-                
-
-        data["month"] = data["month"].astype(int)
-        data["news_probability"] = data["news_probability"].astype(float)        
-
+        data = self.get_data()      
         # Make prediction
-        prediction = int(self.model(torch.tensor(data.values, dtype=torch.float32)).round().item())
-                
+        prediction = self.model(torch.tensor(data, dtype=torch.float32)).detach().numpy()
+        prediction = self.scaler_y.inverse_transform(np.concatenate(prediction).reshape(1, -1))[0][0]
         return prediction
 
     def on_trading_iteration(self):
-        cash, last_price, quantity = self.position_sizing() 
-        if self.get_model_prediction() == 1:
-            if cash > last_price: 
+        cash, last_price, quantity = self.position_sizing()
+        pred = self.get_model_prediction()
+        if pred > last_price:
+            if cash > last_price:
                 order = self.create_order(
-                        self.symbol, 
-                        quantity, 
-                        "buy", 
-                        type="bracket", 
-                    )
-                self.submit_order(order) 
+                    self.symbol,
+                    quantity,
+                    "buy",
+                    time_in_force="gtc",
+                    type="market",
+                )
+                self.submit_order(order)
                 self.last_trade = "buy"
-        elif self.get_model_prediction() == 0:
+        else:
             if self.last_trade == "buy":
-                self.sell_all() 
-            if cash > last_price: 
-                order = self.create_order(
-                        self.symbol, 
-                        quantity, 
-                        "sell", 
-                        type="bracket", 
-                    )
-                self.submit_order(order) 
+                self.sell_all()
                 self.last_trade = "sell"
             
         
