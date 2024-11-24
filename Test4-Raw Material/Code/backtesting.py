@@ -1,73 +1,79 @@
 from datetime import time
-
 import torch
 from lumibot.strategies.strategy import Strategy
-from data_collector import get_finance_data, determine_trend
 from timedelta import Timedelta
+import pandas as pd
+import numpy as np
 
-class Backtest(Strategy): 
-    
-    def initialize(self, model, symbol:str="^GDAXI", cash_at_risk:float=.5, num_prior_days:int=5): 
+class Backtest(Strategy):
+    def initialize(self, model, scaler, scaler_y, dataset: pd.DataFrame, symbol: str = "^GDAXI", cash_at_risk: float = 0.5, num_prior_days: int = 5):
         self.symbol = symbol
-        self.sleeptime = "24H" 
-        self.last_trade = None 
+        self.sleeptime = "24H"
+        self.last_trade = None
         self.cash_at_risk = cash_at_risk
         self.model = model
         self.num_prior_days = num_prior_days
+        self.dataset = dataset
+        self.scaler = scaler
+        self.scaler_y = scaler_y
 
-    def position_sizing(self): 
-        cash = self.get_cash() 
+    def position_sizing(self):
+        cash = self.get_cash()
         last_price = self.get_last_price(self.symbol)
-        quantity = round(cash * self.cash_at_risk / last_price,0)
+        quantity = round(cash * self.cash_at_risk / last_price, 0)
         return cash, last_price, quantity
 
-    def get_dates(self): 
+    def get_dates(self):
         today = self.get_datetime()
-        prior_date = today - Timedelta(days=(self.num_prior_days+10))
+        prior_date = today - Timedelta(days=(self.num_prior_days + 50))
         return today.strftime('%Y-%m-%d'), prior_date.strftime('%Y-%m-%d')
-    
-    def get_model_prediction(self): 
-        today, prior_date = self.get_dates()
-        finance_data = get_finance_data(self.symbol, start=prior_date, end=today, interval="1d")
-        
-        if finance_data.empty:
-            raise ValueError("Finance data is empty. Check data source or date range.")
-        
-        finance_data['trend'] = finance_data.apply(determine_trend, axis=1)
-        data = finance_data.iloc[:, 1:].sort_index(ascending=False)[:self.num_prior_days]
-        data["month"] = data["month"].astype(int)
-        
-        # Reshape with necessary adjustments
-        x = data.to_numpy().reshape(1, self.num_prior_days, len(data.columns))
 
-        # Make prediction
-        prediction = int(self.model(torch.tensor(x, dtype=torch.float32)).round().item())
-                
+    def get_data(self) -> pd.DataFrame:
+        today, prior_date = self.get_dates()
+        self.dataset["Date"] = pd.to_datetime(self.dataset["Date"])
+        self.dataset = self.dataset[['Date','^GDAXI_Open', '^GDAXI_High', '^GDAXI_Low', '^GDAXI_Close',
+                                '^GDAXI_Adj Close', '^GDAXI_Volume', '^GDAXI_month', '^GDAXI_weekday',
+                                'GC=F_Open', 'GC=F_High', 'GC=F_Low', 'GC=F_Close',
+                                'GC=F_Adj Close', 'GC=F_Volume',
+                                'BZ=F_Open', 'BZ=F_High', 'BZ=F_Low', 'BZ=F_Close',
+                                'BZ=F_Adj Close', 'BZ=F_Volume',
+                                'Y']]       
+        finance_data = self.dataset[(self.dataset["Date"] <= today) & (self.dataset["Date"] >= prior_date)]
+        finance_data.sort_values("Date", inplace=True)
+        finance_data.reset_index(inplace=True, drop=True)
+        finance_data = finance_data.iloc[:self.num_prior_days, :]
+        finance_data = finance_data[['^GDAXI_Open', '^GDAXI_High', '^GDAXI_Low', '^GDAXI_Close',
+                                '^GDAXI_Adj Close', '^GDAXI_Volume', '^GDAXI_month', '^GDAXI_weekday',
+                                'GC=F_Open', 'GC=F_High', 'GC=F_Low', 'GC=F_Close',
+                                'GC=F_Adj Close', 'GC=F_Volume',
+                                'BZ=F_Open', 'BZ=F_High', 'BZ=F_Low', 'BZ=F_Close',
+                                'BZ=F_Adj Close', 'BZ=F_Volume']]
+        finance_data = self.scaler.transform(finance_data.values).reshape(1, self.num_prior_days, len(finance_data.columns))
+        return finance_data
+
+    def get_model_prediction(self):
+        finance_data = self.get_data()
+        prediction = self.model(torch.tensor(finance_data, dtype=torch.float32)).detach().numpy()
+        prediction = self.scaler_y.inverse_transform(np.concatenate(prediction).reshape(1, -1))[0][0]
         return prediction
 
     def on_trading_iteration(self):
-        cash, last_price, quantity = self.position_sizing() 
-        if self.get_model_prediction() == 1:
-            if cash > last_price: 
+        cash, last_price, quantity = self.position_sizing()
+        pred = self.get_model_prediction()
+
+        # Entscheiden basierend auf der Vorhersage
+        if pred > last_price:
+            if cash > last_price:
                 order = self.create_order(
-                        self.symbol, 
-                        quantity, 
-                        "buy", 
-                        type="bracket", 
-                    )
-                self.submit_order(order) 
+                    self.symbol,
+                    quantity,
+                    "buy",
+                    time_in_force="gtc",
+                    type="market",
+                )
+                self.submit_order(order)
                 self.last_trade = "buy"
-        elif self.get_model_prediction() == 0:
+        else:
             if self.last_trade == "buy":
-                self.sell_all() 
-            if cash > last_price: 
-                order = self.create_order(
-                        self.symbol, 
-                        quantity, 
-                        "sell", 
-                        type="bracket", 
-                    )
-                self.submit_order(order) 
+                self.sell_all()
                 self.last_trade = "sell"
-            
-        
