@@ -49,7 +49,7 @@ The model aims to achieve higher cumulative returns using the strategy compared 
 ### Backtesting
 
 - **Tools**: Lumibot strategies and YFinance API
-- **Data**: 2022 to 2023 (daily interval)
+- **Data**: 2023 (daily interval)
 - **Performance Comparison**:
   - **DAX Cumulative Return**: **15.6%**
 
