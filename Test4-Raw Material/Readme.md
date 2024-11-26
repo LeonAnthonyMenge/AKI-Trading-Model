@@ -71,10 +71,8 @@ The model aims to achieve higher cumulative returns using the strategy compared 
 
 ## Conclusion
 
-- The results reveal an interesting phenomenon: simpler models with higher test losses can sometimes outperform more complex models with lower losses in terms of returns. This is partly due to the positive returns in both the training and testing periods, which can favor simpler strategies.
+- The findings highlight a curious observation: simpler models with higher test losses can occasionally yield better returns compared to more complex models with lower losses. This outcome may be influenced by the positive returns observed during both the training and testing phases.
 
-- **Low test loss does not guarantee high returns**, and conversely, high returns can sometimes come from models with higher losses.
+- **A lower test loss does not necessarily equate to higher returns**, and, conversely, models with higher losses may sometimes achieve better returns.
 
-- **Key takeaway**: The LSTM's divergence between loss and return may suggest it isn't capturing more complex patterns, but rather exploiting the momentum present in the dataset.
-
-- Future directions should include using different evaluation periods with varying market conditions to assess robustness.
+- **Key insight**: The discrepancy between loss and return in the LSTM suggests it may not be identifying intricate patterns. Instead, it appears to leverage the momentum embedded in the dataset.
