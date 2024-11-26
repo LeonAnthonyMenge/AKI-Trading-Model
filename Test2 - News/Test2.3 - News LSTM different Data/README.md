@@ -57,7 +57,7 @@ The model aims to outperform the overall performance of the SPY index in 2023 an
 - Trading criteria: Predictes Close is higher than current Close
 - Cash at Risk: 50% of available money
 ### Results
-The model generates a 7.89% CAGR, outperforming the SPY (S&P 500) index, which recorded a 27.16% CAGR. In comparison, the model from Test 2.1 achieved only a 7.48% CAGR. This suggests that the way the training and test data is structured—despite using the same dataset—can significantly impact the model's performance. However, it's important to note that the performance difference is relatively small, which may indicate that some of the result could be due to luck, as neural networks don't always produce the same outcome for identical inputs.
+The model generates a 7.89% CAGR, underperforming the SPY (S&P 500) index, which recorded a 27.16% CAGR. In comparison, the model from Test 2.1 achieved only a 7.48% CAGR. This suggests that the way the training and test data is structured—despite using the same dataset—can significantly impact the model's performance. However, it's important to note that the performance difference is relatively small, which may indicate that some of the result could be due to luck, as neural networks don't always produce the same outcome for identical inputs.
 
 | Test 2.1 | Test 2.3 |
 |----- | ------ |
