@@ -68,4 +68,4 @@ The model generates a 7.89% CAGR, underperforming the SPY (S&P 500) index, which
 For more detailed results, check out the [tearsheet](results/tearsheet.html) and the [trades](results/trades.html) executed by our model.
 
 ## Conclusion
-Further testing is needed to confirm that different data structuring truly impacts performance. However, initial results suggest that the way the data is organized does have an effect on the model's performance.
+Additional testing is required to definitively determine the extent to which data structuring impacts performance. However, initial findings indicate that the organization of data does influence the model's effectiveness. In this test, the model achieved a minimum test loss of 0.0004063577649, outperforming the model from Test 2.1, which recorded a minimum test loss of 0.0004765634167.
