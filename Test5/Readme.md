@@ -3,7 +3,7 @@
 ## Short Description
 This Test explores the use of a Long Short-Term Memory (LSTM) neural network to predict the profitability of buying the DAX index on a given day. Unlike in Test 1, where a different target was predicted, this model focuses on forecasting the next day's Close value to assess profitability.
 ## Model
-### Achritecture
+### Architecture
 - Model Type: LSTM
 - Objective: Predict DAX closing prices to generate a trading strategy
 ### Parameter
@@ -115,14 +115,14 @@ This experiment kept the number of neurons constant (hidden size = 10) while var
 | ![1 layer](images/1_layer.png) | ![1 layer](images/10_layer.png) |
 
 ## Performance Criteria
-The model with the parameters yielding the lowest loss will be integrated into a trading strategy, aiming to outperform the overall performance of the SPY index.
+The model with the parameters yielding the lowest loss will be integrated into a trading strategy, aiming to outperform the overall performance of the DAX index.
 ## Backtesting
 ### Setup
 - Backtesting Library: [Lumibot](https://lumibot.lumiwealth.com/index.html)
 - Trading criteria: Predictes Close is higher than current Close
 - Cash at Risk: 50% of available money
 ### Results
-The Model generates 7.48% CAGR compared to 27.16% CAGR.
+The model achieves a cumulative return of 7.61%, significantly underperforming the benchmark cumulative return of 15.6%. One contributing factor to this lower return is that the model begins trading only after approximately three months.
 | Comulative Return | Monthly Returns | Trades |
 | ----------------- | ------------------- | ------ |
 | ![comulative return](images/com_return_test5.png) | ![monthly performance](images/monthly_return_test5.png) | ![trades](images/trades_test5.png) |
