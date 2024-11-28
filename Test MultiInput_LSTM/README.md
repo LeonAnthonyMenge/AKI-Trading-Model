@@ -4,7 +4,7 @@
 This project explores the use of a Multi-Input Long Short-Term Memory (LSTM) neural network to predict the profitability of purchasing the SPY index on a given day. The model leverages three distinct LSTMs to enhance predictive accuracy: one processes current news data, another incorporates commodities data along with their correlations over the last five rows, and the third utilizes the Fear and Greed Index to forecast the next day's closing value.
 
 ## Model
-### Achritecture
+### Architecture
 - Model Type: Multi-Input-LSTM
     1. **LSTM Architecture**  
         - Each LSTM processes distinct input data streams.  
@@ -29,7 +29,7 @@ This project explores the use of a Multi-Input Long Short-Term Memory (LSTM) neu
 #### Training Parameters
 - Number of Epochs Stops after 8 epochs without getting better
 - batch_size: 1
-- seq_lenght: 30
+- seq_length: 30
 - Max Epochs: 500
 - Learning Rate: 0.000001
 
@@ -113,23 +113,23 @@ The model aims to outperform the overall performance of the SPY index in 2023.
 In our Backtesting we used different Strategies to test the Performance difference for the same model between different strategies.
 ### Setup
 - Backtesting Library: [Lumibot](https://lumibot.lumiwealth.com/index.html)
-- Trading criteria: Predictes Close is higher than current Close
+- Trading criteria: Predicts Close is higher than current Close
 
-| cagr market | com return market | cagr    | com return  | Stop Loss | cash at risk | take profit | careful        |
-|--------------|-------------------|---------|-------------|-----------|--------------|-------------|--------------|
-| 27.16%       | 26.74%            | 8.24%   | 8.13%       | 0         | -            | -           | -            |
-| 27.16%       | 26.74%            | 8.24%   | 8.13%       | 0.95      | 0.5          | -           | -            |
-| 27.16%       | 26.74%            | 8.80%   | 8.67%       | 0.95      | 0.8          | -           | -            |
-| 27.16%       | 26.74%            | 9.13%   | 9%          | 0.95      | 1            | 1.2         | careful short* |
-| 27.16%       | 26.74%            | 8.80%   | 8.67%       | 0.95      | 0.8          | 1.2         | -            |
-| 27.16%       | 26.74%            | 9.13%   | 9.00%       | 0.95      | 1            | 1.2         | -            |
-| 27.16%       | 26.74%            | 22.48%   | 22.14%       | 0.95      | 1            | 1.2         | careful short, careful buy |
+| cagr market | cum return market | cagr    | cum return | Stop Loss | cash at risk | take profit | careful        |
+|--------------|-------------------|---------|------------|-----------|--------------|-------------|--------------|
+| 27.16%       | 26.74%            | 8.24%   | 8.13%      | 0         | -            | -           | -            |
+| 27.16%       | 26.74%            | 8.24%   | 8.13%      | 0.95      | 0.5          | -           | -            |
+| 27.16%       | 26.74%            | 8.80%   | 8.67%      | 0.95      | 0.8          | -           | -            |
+| 27.16%       | 26.74%            | 9.13%   | 9%         | 0.95      | 1            | 1.2         | careful short* |
+| 27.16%       | 26.74%            | 8.80%   | 8.67%      | 0.95      | 0.8          | 1.2         | -            |
+| 27.16%       | 26.74%            | 9.13%   | 9.00%      | 0.95      | 1            | 1.2         | -            |
+| 27.16%       | 26.74%            | 22.48%   | 22.14%     | 0.95      | 1            | 1.2         | careful short, careful buy |
 
 **careful short: `pred*1.15 < last_price`*
 **careful buy: `pred*1.05 > last_price`*
 
 ### Results
-The model generates a 9.00% return compared to the 26.74% return of the SPY index. When the model incorporates shorting the index during expected downturns, it results in a high CAGR but poor overall returns. This is because the model initially performs well but fails to capture significant market jumps. To mitigate this, we implemented a "careful short" strategy, yet even with this adjustment, the model does not outperform a straightforward buy-only strategy. However when implementing a careful buy strategy and a careful short strategy the model is able to score a comulative return of 22.14%, which is still not better than the market but the closest we could get during our testing.The model generates a 9.00% return, compared to the 26.74% return of the SPY index. When incorporating shorting during expected downturns, the model achieves a high CAGR but poor overall returns, as it performs well initially but struggles to capture significant market jumps. To address this, a "careful short" strategy was introduced, but even with this adjustment, the model still underperforms a simple buy-only strategy. However, by combining a careful buy strategy with the careful short approach, the model achieves a cumulative return of 22.14%. While this still falls short of the market, it represents the closest we could get during our testing.
+The model generates a 9.00% return compared to the 26.74% return of the SPY index. When the model incorporates shorting the index during expected downturns, it results in a high CAGR but poor overall returns. This is because the model initially performs well but fails to capture significant market jumps. To mitigate this, we implemented a "careful short" strategy, yet even with this adjustment, the model does not outperform a straightforward buy-only strategy. However when implementing a careful buy strategy and a careful short strategy the model is able to score a cumulative return of 22.14%, which is still not better than the market but the closest we could get during our testing.The model generates a 9.00% return, compared to the 26.74% return of the SPY index. When incorporating shorting during expected downturns, the model achieves a high CAGR but poor overall returns, as it performs well initially but struggles to capture significant market jumps. To address this, a "careful short" strategy was introduced, but even with this adjustment, the model still underperforms a simple buy-only strategy. However, by combining a careful buy strategy with the careful short approach, the model achieves a cumulative return of 22.14%. While this still falls short of the market, it represents the closest we could get during our testing.
 
 All tests in this table have been using those Parameters: 
 cash at risk: 1, stop loss: 0.95, take profit: 1.2
@@ -141,7 +141,7 @@ cash at risk: 1, stop loss: 0.95, take profit: 1.2
  
 As shown in the images, a "careful short" in our example effectively translates to no shorting at all. This suggests that the model struggles to accurately predict falling stock prices.
 
-In order to get a more detailt view of the performance of each trading strategy take a look at our [tearsheets and trades](results/)
+In order to get a more detailed view of the performance of each trading strategy take a look at our [tearsheets and trades](results/)
 
 ## Conclusion
 The backtesting was performed using our final model, which was trained with the parameters outlined earlier. This model achieved a minimum test loss of 0.0004085484247, resulting in a Mean Squared Error (MSE) of 35.48. These results indicate that this model outperforms all others tested, making it the most effective model in our experiments.
