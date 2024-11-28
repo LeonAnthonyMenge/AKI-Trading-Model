@@ -57,7 +57,7 @@ The model aims to outperform the overall performance of the SPY index in 2023 an
 - Trading criteria: Predictes Close is higher than current Close
 - Cash at Risk: 50% of available money
 ### Results
-The model generates a 7.89% CAGR, outperforming the SPY (S&P 500) index, which recorded a 27.16% CAGR. In comparison, the model from Test 2.1 achieved only a 7.48% CAGR. This suggests that the way the training and test data is structured—despite using the same dataset—can significantly impact the model's performance. However, it's important to note that the performance difference is relatively small, which may indicate that some of the result could be due to luck, as neural networks don't always produce the same outcome for identical inputs.
+The model generates a 7.89% CAGR, underperforming the SPY (S&P 500) index, which recorded a 27.16% CAGR. In comparison, the model from Test 2.1 achieved only a 7.48% CAGR. This suggests that the way the training and test data is structured—despite using the same dataset—can significantly impact the model's performance. However, it's important to note that the performance difference is relatively small, which may indicate that some of the result could be due to luck, as neural networks don't always produce the same outcome for identical inputs.
 
 | Test 2.1 | Test 2.3 |
 |----- | ------ |
@@ -68,4 +68,4 @@ The model generates a 7.89% CAGR, outperforming the SPY (S&P 500) index, which r
 For more detailed results, check out the [tearsheet](results/tearsheet.html) and the [trades](results/trades.html) executed by our model.
 
 ## Conclusion
-Further testing is needed to confirm that different data structuring truly impacts performance. However, initial results suggest that the way the data is organized does have an effect on the model's performance.
+Additional testing is required to definitively determine the extent to which data structuring impacts performance. However, initial findings indicate that the organization of data does influence the model's effectiveness. In this test, the model achieved a minimum test loss of 0.0004063577649, outperforming the model from Test 2.1, which recorded a minimum test loss of 0.0004765634167.
