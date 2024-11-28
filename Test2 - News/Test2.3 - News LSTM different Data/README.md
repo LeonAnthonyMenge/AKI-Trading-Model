@@ -23,7 +23,7 @@ This Model is using the exact same parameters, data and model structur as in [te
 ## Data
 - Interval: daily
 - Train Data 2015-01-01 to 2022-12-31
-- Train Data 2023-01-01 to 2023-12-31
+- Test Data 2023-01-01 to 2023-12-31
 
 | Column            | Description                                                                                             |
 |-------------------|---------------------------------------------------------------------------------------------------------|
