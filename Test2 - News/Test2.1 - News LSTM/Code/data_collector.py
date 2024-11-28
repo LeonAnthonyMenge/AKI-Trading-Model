@@ -1,14 +1,11 @@
 import pandas as pd
-import numpy as np
 from datetime import timedelta
 import requests
 import os
 from dotenv import load_dotenv
-from tqdm import tqdm
 import yfinance as yf
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
-import time
 
 load_dotenv()
 

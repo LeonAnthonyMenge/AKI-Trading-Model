@@ -1,4 +1,3 @@
-from datetime import time
 import torch
 from lumibot.strategies.strategy import Strategy
 from timedelta import Timedelta

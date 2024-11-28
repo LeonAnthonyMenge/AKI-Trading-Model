@@ -1,7 +1,6 @@
 import pandas as pd
 from dotenv import load_dotenv
 import yfinance as yf
-import torch
 
 load_dotenv()
           
