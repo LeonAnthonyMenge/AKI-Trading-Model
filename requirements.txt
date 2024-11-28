@@ -10,3 +10,4 @@ torch
 transformers
 python-dotenv
 scikit-learn
+ta
