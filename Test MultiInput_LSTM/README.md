@@ -144,4 +144,8 @@ As shown in the images, a "careful short" in our example effectively translates 
 In order to get a more detailt view of the performance of each trading strategy take a look at our [tearsheets and trades](results/)
 
 ## Conclusion
+The backtesting was performed using our final model, which was trained with the parameters outlined earlier. This model achieved a minimum test loss of 0.0004085484247, resulting in a Mean Squared Error (MSE) of 35.48. These results indicate that this model outperforms all others tested, making it the most effective model in our experiments.
+
+![pred_vs_act](images/pred_vs_act.png)
+
 Despite the promising structure of the Multi-Input LSTM model, it was unable to outperform the market in this particular setup. The model's performance varied depending on the strategy applied, with the "careful short" approach essentially having no effect due to its failure to predict market downturns. When combining "careful buy" and "careful short," the model achieved a cumulative return of 22.14%, still falling short of the SPY index's 26.74% return. This indicates that the model struggles to capture significant market movements, and further testing with different symbols, datasets, and model variations is necessary to improve performance and better compete with the market.
