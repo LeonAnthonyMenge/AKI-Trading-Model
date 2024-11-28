@@ -33,20 +33,12 @@ class Backtest(Strategy):
         self.dataset["Date"] = pd.to_datetime(self.dataset["Date"])
         finance_data = self.dataset[(self.dataset["Date"] <= today) & (self.dataset["Date"] >= prior_date)]
         finance_data.sort_values("Date", inplace=True)
-        finance_data.reset_index(inplace=True, drop=True)
-        finance_data = finance_data.iloc[:self.num_prior_days, :]
-        finance_data = finance_data[["Open", "High", "Low", "Close", "Adj Close", "Volume", "month", "weekday"]]
+        finance_data = finance_data.iloc[:self.num_prior_days, 1:-1]
         finance_data = self.scaler.transform(finance_data.values).reshape(1, self.num_prior_days, len(finance_data.columns))
         return finance_data
 
     def get_model_prediction(self):
-        today, prior_date = self.get_dates()
-        self.dataset["Date"] = pd.to_datetime(self.dataset["Date"])
-        finance_data = self.dataset[(self.dataset["Date"] < today) & (self.dataset["Date"] >= prior_date)]
-        finance_data.sort_values("Date", inplace=True)
-        finance_data.reset_index(inplace=True, drop=True)
-        finance_data = finance_data.iloc[:self.num_prior_days, 2:-1]
-        finance_data = self.scaler.transform(finance_data.values).reshape(1, self.num_prior_days, len(finance_data.columns))
+        finance_data = self.get_data()
         prediction = self.model(torch.tensor(finance_data, dtype=torch.float32)).detach().numpy()
         prediction = self.scaler_y.inverse_transform(np.concatenate(prediction).reshape(1, -1))[0][0]
         return prediction
