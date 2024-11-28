@@ -8,7 +8,10 @@
 **/Test*/Models/
 **/Test*/Code/logs/
 **/Test*/Code/results.csv
-**/Test*/Code/Models
+
+**/Test*/Test*/Code/Models/
+**/Test*/Test*/Code/logs/
+**/Test*/Test*/Code/results/
 
 # Python virtual environment and cache files
 **/venv/
